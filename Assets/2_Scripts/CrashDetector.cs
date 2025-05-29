@@ -8,10 +8,12 @@ public class CrashDetector : MonoBehaviour
     [SerializeField] private AudioClip crashSound; 
     
     private AudioSource audioSource;
+    private PlayerController playerController;
 
     private void Start()
     {
         audioSource = GetComponent<AudioSource>();
+        playerController = GetComponent<PlayerController>();
     }
 
     void OnTriggerEnter2D(Collider2D other)
@@ -19,7 +21,8 @@ public class CrashDetector : MonoBehaviour
         if (other.CompareTag("Ground"))
         {
             crashEffect.Play();
-            audioSource.PlayOneShot(crashSound); 
+            audioSource.PlayOneShot(crashSound);
+            playerController.GameOver(); 
             Invoke(nameof(ReloadScene), reloadDelay);
         }
     }

@@ -9,6 +9,7 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D rb;
     private SurfaceEffector2D surfaceEffector2D;
     private bool isBoosting = false;
+    private bool isRuning = true;
 
     private enum InputKey
     {
@@ -30,12 +31,18 @@ public class PlayerController : MonoBehaviour
             Input.GetKey(KeyCode.RightArrow) ? InputKey.Right : InputKey.None;
 
         isBoosting = Input.GetKey(KeyCode.UpArrow);
+    }
 
+    public void GameOver()
+    {
+        isRuning = false; 
     }
 
     void FixedUpdate()
     {
-        switch(currentKey)
+        if (!isRuning) return; 
+
+        switch (currentKey)
         {
             case InputKey.Left:
                 rb.AddTorque(torqueForce);
