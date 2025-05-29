@@ -3,7 +3,12 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     public float torqueForce = 3f; // 토크의 크기
+    [SerializeField] float baseSpeed = 20f;
+    [SerializeField] float boostSpeed = 30f;
+
     private Rigidbody2D rb;
+    private SurfaceEffector2D surfaceEffector2D;
+    private bool isBoosting = false;
 
     private enum InputKey
     {
@@ -15,6 +20,7 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        surfaceEffector2D = Object.FindFirstObjectByType<SurfaceEffector2D>(); // Updated to use FindFirstObjectByType
     }
 
     void Update()
@@ -22,6 +28,9 @@ public class PlayerController : MonoBehaviour
         currentKey = Input.GetKey(KeyCode.LeftArrow) ?
             InputKey.Left :
             Input.GetKey(KeyCode.RightArrow) ? InputKey.Right : InputKey.None;
+
+        isBoosting = Input.GetKey(KeyCode.UpArrow);
+
     }
 
     void FixedUpdate()
@@ -38,5 +47,7 @@ public class PlayerController : MonoBehaviour
                 // Do nothing
                 break;
         }
+
+        surfaceEffector2D.speed = isBoosting ? boostSpeed : baseSpeed;
     }
 }

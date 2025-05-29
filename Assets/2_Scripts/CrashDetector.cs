@@ -4,12 +4,22 @@ using UnityEngine.SceneManagement;
 public class CrashDetector : MonoBehaviour
 {
     [SerializeField] private float reloadDelay = 1f;
+    [SerializeField] private ParticleSystem crashEffect;
+    [SerializeField] private AudioClip crashSound; 
+    
+    private AudioSource audioSource;
+
+    private void Start()
+    {
+        audioSource = GetComponent<AudioSource>();
+    }
 
     void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Ground"))
         {
-            Debug.Log("오! 내 머리야!");
+            crashEffect.Play();
+            audioSource.PlayOneShot(crashSound); 
             Invoke(nameof(ReloadScene), reloadDelay);
         }
     }
